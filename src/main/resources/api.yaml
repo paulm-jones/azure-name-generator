@@ -49,7 +49,7 @@ definitions:
     properties:
       resource_name:
         type: string
-        example: UKEUa878asdhhj
+#        example: UKEUa878asdhhj
 host: localhost
 basePath: /api
 schemes:
