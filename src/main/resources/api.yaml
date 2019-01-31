@@ -1,0 +1,57 @@
+swagger: '2.0'
+info:
+  description: Generates policy compliant names for Azure resources
+  version: 1.0.0
+  title: Azure Name Generator
+  contact:
+    email:
+
+tags:
+- name: Compute
+  description: Compute related calls
+- name: PaaS
+  description: PaaS related calls
+
+paths:
+  /virtual_machine:
+    get:
+      tags:
+      - Compute
+      summary: Generates a Virtual Machine name
+      operationId: generateCompute
+      description: |
+        Virtual Machine names should be country, region, random...
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: country_code
+        description: A country code
+        required: true
+        type: string
+      - in: query
+        name: location
+        description: An Azure location
+        required: true
+        type: string
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            $ref: '#/definitions/ResourceName'
+        400:
+          description: Bad input parameters
+definitions:
+  ResourceName:
+    type: object
+    required:
+    - resource_name
+    properties:
+      resource_name:
+        type: string
+        example: UKEUa878asdhhj
+host: localhost
+basePath: /api
+schemes:
+ - https
+ - http
