@@ -7,12 +7,168 @@ info:
     email:
 
 tags:
+- name: Management
+  description: Management of Azure resources, groups, etc.
 - name: Compute
   description: Compute related calls
 - name: PaaS
   description: PaaS related calls
 
 paths:
+  /resource_group:
+    get:
+      tags:
+      - Management
+      summary: Generates a ResourceGroup name
+      operationId: generateResourceGroupName
+      description: |
+        <subscription>-<context>-rg
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: subscription
+        description: A Subscription name
+        required: true
+        type: string
+      - in: query
+        name: context
+        description: Context to describe the ResourceGroup
+        required: true
+        type: string
+      responses:
+        200:
+          description: A ResourceName object.
+          schema:
+            $ref: '#/definitions/ResourceName'
+        400:
+          description: Bad input parameters
+
+  /availability_set:
+    get:
+      tags:
+      - Compute
+      summary: Generates an Availability Set name
+      operationId: generateAvailabilitySetName
+      description: |
+        <service>-<context>-as
+      produces:
+      - application/json
+      #TODO - pattern not clear, what is service?
+      parameters:
+      - in: query
+        name: context
+        description: Context to describe the Availability Set
+        required: true
+        type: string
+      - in: query
+        name: service
+        description: Context to describe the Availability Set
+        required: true
+        type: string
+      responses:
+        200:
+          description: A ResourceName object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+          schema:
+            $ref: '#/definitions/ResourceName'
+          examples:
+            application/json: |-
+              {
+                resource_name: "XXXAS"
+              }
+        400:
+          description: Bad input parameters
+
+  /policy:
+    get:
+      tags:
+      - Management
+      summary: Generates a Policy name
+      operationId: generatePolicyName
+      description: |
+        <creator>-<action>-<context>
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: creator
+        description: A Creator name
+        required: true
+        type: string
+      - in: query
+        name: action
+        description: The action
+        required: true
+        type: string
+      - in: query
+        name: context
+        description: The contect
+        required: true
+        type: string
+      responses:
+        200:
+          description:
+          examples: tss-restrict-regions
+          schema:
+            $ref: '#/definitions/ResourceName'
+        400:
+          description: Bad input parameters
+
+  /automation_account:
+    get:
+      tags:
+      - Management
+      summary: Generates an AutomationAccountName name
+      operationId: generateAutomationAccountName
+      description: |
+        <subscription>auto#
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: subscription
+        description: A Subscription name (no underscore)
+        required: true
+        type: string
+      responses:
+        200:
+          description: A ResourceName object.
+          examples: gmprojxdevauto1
+          schema:
+            $ref: '#/definitions/ResourceName'
+        400:
+          description: Bad input parameters
+
+  /lock:
+    get:
+      tags:
+      - Management
+      summary: Generates a Lock name
+      operationId: generateLockName
+      description: |
+        <resource>-lock
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: resource
+        description: A resource or resource group name
+        required: true
+        type: string
+      responses:
+        200:
+          description: A ResourceName object.
+          examples: gn_projx_dev-network-rg-lock
+          schema:
+            $ref: '#/definitions/ResourceName'
+        400:
+          description: Bad input parameters
+
+
   /virtual_machine:
     get:
       tags:
@@ -36,11 +192,13 @@ paths:
         type: string
       responses:
         200:
-          description: search results matching criteria
+          description: A ResourceName object.
+          examples: USLPAZ12345678
           schema:
             $ref: '#/definitions/ResourceName'
         400:
           description: Bad input parameters
+
 definitions:
   ResourceName:
     type: object
@@ -49,7 +207,7 @@ definitions:
     properties:
       resource_name:
         type: string
-#        example: UKEUa878asdhhj
+        examples: some_object_name
 host: localhost
 basePath: /api
 schemes:

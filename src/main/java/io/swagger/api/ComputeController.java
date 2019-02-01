@@ -10,10 +10,15 @@ import javax.validation.constraints.NotNull;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-01-31T08:50:33.227Z")
 
 @Controller
-public class VirtualMachineApiController implements VirtualMachineApi {
+public class ComputeController implements VirtualMachineApi, AvailabilitySetApi  {
 
     @Override
     public ResponseEntity<ResourceName> generateCompute(@NotNull String countryCode, @NotNull String location) {
         return ResponseEntity.ok(ResourceNameService.getVirtualMachineName());
+    }
+
+    @Override
+    public ResponseEntity<ResourceName> generateAvailabilitySetName(@NotNull String context, @NotNull String service) {
+        return null;
     }
 }
